@@ -20,5 +20,10 @@ class TestUpdater(unittest.TestCase):
 		response = self.app.post("/")
 		self.assertNotEqual(response.status_code, 405)
 
+	# The updater should return a 400 status code if X-GitHub-Event isn't set
+	def test_empty_event(self):
+		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot'})
+		self.assertEqual(response.status_code, 400)
+
 if __name__ == '__main__':
 	unittest.main()
