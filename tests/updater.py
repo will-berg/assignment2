@@ -36,5 +36,10 @@ class TestUpdater(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.text.strip(), '{}')
 
+	# An unsupported event should return a 400 status code
+	def test_unsupported_event(self):
+		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'deadbeef'})
+		self.assertEqual(response.status_code, 400)
+
 if __name__ == '__main__':
 	unittest.main()
