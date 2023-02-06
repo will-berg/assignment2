@@ -20,6 +20,11 @@ class TestUpdater(unittest.TestCase):
 		response = self.app.post("/")
 		self.assertNotEqual(response.status_code, 405)
 
+	# Only a user agent that starts with 'GitHub-Hookshot' should be allowed
+	def test_disallow_ua_not_github(self):
+		response = self.app.post("/", headers={'User-Agent': 'Firefox'})
+		self.assertEqual(response.status_code, 403)
+
 	# The updater should return a 400 status code if X-GitHub-Event isn't set
 	def test_empty_event(self):
 		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot'})
