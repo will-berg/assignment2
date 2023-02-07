@@ -1,3 +1,4 @@
+#!/bin/bash
 ./kill.sh
 
 ./git_main.sh
