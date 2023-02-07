@@ -42,7 +42,7 @@ def run_pipeline(req):
 	if res == False:
 		notify(req, 'error')
 		return
-	res = run_tests(req)
+	res = run_tests()
 	if res == False:
 		notify(req, 'error')
 		return
@@ -68,8 +68,13 @@ def static_analysis():
 
 
 # The CI server executes the test suite on the branch that was changed
-def run_tests(req):
-	pass
+def run_tests():
+	res = subprocess.run(["bash", "test.sh"], stdout=subprocess.PIPE)
+	pylint_output = res.stdout
+	if res.returncode == 0:
+		return True
+	else:
+		return False
 
 
 # The CI server sets commit status
