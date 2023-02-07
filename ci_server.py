@@ -19,7 +19,7 @@ def handle():
 	if event == 'ping':
 		return ({'message': 'We are here \o/'}, 200)
 	elif event == 'push':
-		req = request.data
+		req = json.loads(request.data)
 
 		old = os.getcwd()
 		dir_name = f"/tmp/{req['after']}"
