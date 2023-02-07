@@ -5,7 +5,8 @@ cd $(dirname $0)
 
 ./git_main.sh
 
-../build.sh
-. ../venv/bin/activate
-../run.sh
+cd ..
+./build.sh
+. venv/bin/activate
+./run.sh
 deactivate
