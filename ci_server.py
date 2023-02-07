@@ -10,5 +10,5 @@ def handle():
 
 	event = request.headers.get('X-GitHub-Event')
 
-	if event  == 'ping':
+	if event == 'ping':
 		return ({'message': 'We are here \o/'}, 200)
