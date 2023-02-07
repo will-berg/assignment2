@@ -28,12 +28,25 @@ def handle():
 		os.chdir(dir_name)
 		subprocess.call(["bash", "util/git_setup.sh", f"{req['repository']['clone_url']}", f"{req['after']}"])
 
-		run_build()
-		static_analysis()
-		run_tests(request.data)
+		run_pipeline(req)
 
 		os.chdir(old)
+		return {'message': 'webhook done'}
 
+def run_pipeline(req):
+	res = run_build()
+	if res == False:
+		notify(req, 'error')
+		return
+	res = static_analysis()
+	if res == False:
+		notify(req, 'error')
+		return
+	res = run_tests(req)
+	if res == False:
+		notify(req, 'error')
+		return
+	notify(req, 'success')
 
 # Run build script
 def run_build():
