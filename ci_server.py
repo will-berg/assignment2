@@ -2,6 +2,8 @@ from flask import Flask, request
 import json
 import sys
 import subprocess
+import requests
+from github_token import github_token
 
 app = Flask(__name__)
 
@@ -34,5 +36,29 @@ def run_tests(req):
 
 # The CI server sets commit status
 def notify(req, status):
-	pass
+	try:
+		full_name = req["repository"]["full_name"]
+		SHA = req["after"]
+
+		headers = {
+			'Accept': 'application/vnd.github+json',
+			'Authorization': f'Bearer {github_token}',
+			'X-GitHub-Api-Version': '2022-11-28',
+			'Content-Type': 'application/x-www-form-urlencoded',
+		}
+		data = '{"state":"' + status + '"}'
+
+		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=data)
+		
+		response_json = response.json()
+		response.raise_for_status()
+
+		if response.status_code == 201:
+			return response_json
+	
+	except requests.exceptions.RequestException as e:
+		print(e)
+		raise
+	
+
 
