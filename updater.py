@@ -1,4 +1,5 @@
 from flask import Flask, request
+import os
 
 app = Flask(__name__)
 
@@ -18,3 +19,11 @@ def update():
 		return ({}, 200)
 	else:
 		return ({'message': f'Event {event} is not supported.'}, 400)
+
+def update_and_restart():
+	pid = os.fork()
+
+	if pid == 0:
+		os.execl('./util/update_restart.sh')
+
+	return True
