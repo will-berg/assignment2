@@ -2,3 +2,4 @@
 cd $(dirname $0)
 
 [ -f /tmp/pid_updater ] && kill -TERM $(cat /tmp/pid_updater)
+[ -f /tmp/pid_ci ] && kill -TERM $(cat /tmp/pid_ci)
