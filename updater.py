@@ -14,7 +14,8 @@ def update():
 		return ({'message': 'The event type wasn\'t specified.'}, 400)
 
 	if event == 'push':
-		return ({'message': 'This event is currently unimplemented.'}, 501)
+		update_and_restart()
+		return ({'message': 'Update process started.'}, 200)
 	elif event == 'ping':
 		return ({}, 200)
 	else:
@@ -26,4 +27,4 @@ def update_and_restart():
 	if pid == 0:
 		os.execl('./util/update_restart.sh')
 
-	return True
+	return
