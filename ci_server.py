@@ -34,27 +34,37 @@ def handle():
 		return {'message': 'webhook done'}
 
 def run_pipeline(req):
-	res = run_build()
+	res, build_output = run_build()
 	if res == False:
-		notify(req, 'error')
+		notify(req, 'failure', build_output, 'build', 'build failed')
 		return
-	res = static_analysis()
+	else:
+		notify(req, 'success', build_output, 'build', 'build passed')
+
+	res, lint_output = static_analysis()
 	if res == False:
-		notify(req, 'error')
+		notify(req, 'failure', lint_output, 'lint', 'lint failed')
 		return
-	res = run_tests()
+	else:
+		notify(req, 'success', lint_output, 'lint', 'lint passed')
+
+	res, test_output = run_tests()
 	if res == False:
-		notify(req, 'error')
+		notify(req, 'failure', test_output, 'test', 'tests failed')
 		return
-	notify(req, 'success')
+	else:
+		notify(req, 'success', test_output, 'test', 'tests passed')
+		return
+
 
 # Run build script
 def run_build():
-	res = subprocess.run(["bash", "build.sh"])
+	res = subprocess.run(["bash", "build.sh"], stdout=subprocess.PIPE)
+	build_output = res.stdout
 	if res.returncode == 0:
-		return True
+		return True, build_output
 	else:
-		return False
+		return False, build_output
 
 
 # The CI server performs static analysis on the updated branch
@@ -62,36 +72,43 @@ def static_analysis():
 	res = subprocess.run(["bash", "lint.sh"], stdout=subprocess.PIPE)
 	pylint_output = res.stdout
 	if res.returncode == 0:
-		return True
+		return True, pylint_output
 	else:
-		return False
+		return False, pylint_output
 
 
 # The CI server executes the test suite on the branch that was changed
 def run_tests():
 	res = subprocess.run(["bash", "test.sh"], stdout=subprocess.PIPE)
-	pylint_output = res.stdout
+	test_output = res.stdout
 	if res.returncode == 0:
-		return True
+		return True, test_output
 	else:
-		return False
+		return False, test_output
 
 
 # The CI server sets commit status
-def notify(req, status):
-	try:
-		full_name = req["repository"]["full_name"]
-		SHA = req["after"]
+# req: The input request (json)
+# name: The name of the check. For example, "code-coverage". (string)
+# conclusion: The final conclusion of the check. Can be one of: action_required, cancelled, failure, neutral, success, skipped, stale, timed_out. (string)
+# title: The title of the check run. (string)
+# summary: The summary of the check run. This parameter supports Markdown. Maximum length: 65535 characters. (string)
+# text: The details of the check run. This parameter supports Markdown. Maximum length: 65535 characters. (string)
+def notify(req, conclusion, text, title, summary):
+	name = "CI Server"
 
+	try:
 		headers = {
 			'Accept': 'application/vnd.github+json',
 			'Authorization': f'Bearer {github_token}',
 			'X-GitHub-Api-Version': '2022-11-28',
 			'Content-Type': 'application/json',
 		}
-		data = '{"state":"' + status + '"}'
+		output = {"title": title, "summary": summary, "text": text}
+		repo_full_name = req["repository"]["full_name"]
+		data = {"name": name, "head_sha": req["after"], "conclusion": conclusion, "output": output}
 
-		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=data)
+		response = requests.post(f'https://api.github.com/repos/{repo_full_name}/check-runs', headers=headers, data=data)
 
 		response_json = response.json()
 		response.raise_for_status()
