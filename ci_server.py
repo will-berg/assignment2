@@ -39,7 +39,7 @@ def handle():
 def run_pipeline(req):
 	notify(req, 'pending')
 	file_name = f'/srv/ci/{req["after"]}'
-	todays_date = bytes(date.today(), 'utf-8')
+	todays_date = str(date.today())
 	with open(file_name, "ab") as file:
 		file.write(bytes("Commit id: " + req["after"] + " Build date: " + todays_date + "\n", 'utf-8'))
 		res, output = run_build()
