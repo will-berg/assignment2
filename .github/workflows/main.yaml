@@ -11,15 +11,11 @@ jobs:
       - name: Build
         run:  |
               ./build.sh
-      - name: Activate
-        run:  |
-              . venv/bin/activate
-              echo "Virtual env: " $VIRTUAL_ENV
       - name: Lint
         run:  |   
-              echo "Virtual env: " $VIRTUAL_ENV
+              . venv/bin/activate
               ./lint.sh
-              echo "Virtual env: " $VIRTUAL_ENV
       - name: Test
         run:  |
+              . venv/bin/activate
               ./test.sh
