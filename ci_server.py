@@ -34,47 +34,51 @@ def handle():
 		return {'message': 'webhook done'}
 
 def run_pipeline(req):
-	res = run_build()
-	if res == False:
-		notify(req, 'error')
-		return
-	res = static_analysis()
-	if res == False:
-		notify(req, 'error')
-		return
-	res = run_tests()
-	if res == False:
-		notify(req, 'error')
-		return
-	notify(req, 'success')
+	file_name = f'/srv/ci/{req["after"]}'
+	with open(file_name, "a") as file:
+		res, output = run_build()
+		file.write(output)
+		if res == False:
+			notify(req, 'error')
+			return
+		res, output = static_analysis()
+		file.write(output)
+		if res == False:
+			notify(req, 'error')
+			return
+		res, output = run_tests()
+		file.write(output)
+		if res == False:
+			notify(req, 'error')
+			return
+		notify(req, 'success')
+
 
 # Run build script
 def run_build():
-	res = subprocess.run(["bash", "build.sh"])
+	res = subprocess.run(["bash", "build.sh"], stdout=subprocess.PIPE)
 	if res.returncode == 0:
-		return True
+		return True, res.stdout
 	else:
-		return False
+		return False, res.stdout
 
 
 # The CI server performs static analysis on the updated branch
 def static_analysis():
 	res = subprocess.run(["bash", "lint.sh"], stdout=subprocess.PIPE)
-	pylint_output = res.stdout
 	if res.returncode == 0:
-		return True
+		return True, res.stdout
 	else:
-		return False
+		return False, res.stdout
 
 
 # The CI server executes the test suite on the branch that was changed
 def run_tests():
 	res = subprocess.run(["bash", "test.sh"], stdout=subprocess.PIPE)
-	pylint_output = res.stdout
 	if res.returncode == 0:
-		return True
+		return True, res.stdout
 	else:
-		return False
+		return False, res.stdout
 
 
 # The CI server sets commit status
