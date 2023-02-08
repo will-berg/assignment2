@@ -12,10 +12,8 @@ jobs:
         run:  |
               ./build.sh
       - name: Lint
-        run:  |   
-              . venv/bin/activate
+        run:  |
               ./lint.sh
       - name: Test
         run:  |
-              . venv/bin/activate
               ./test.sh
