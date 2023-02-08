@@ -37,6 +37,7 @@ def handle():
 		return {'message': 'webhook done'}
 
 def run_pipeline(req):
+	notify(req, 'pending')
 	file_name = f'/srv/ci/{req["after"]}'
 	todays_date = date.today()
 	with open(file_name, "ab") as file:
