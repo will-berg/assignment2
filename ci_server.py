@@ -34,7 +34,7 @@ def handle():
 		return {'message': 'webhook done'}
 
 def run_pipeline(req):
-	file_name = f'srv/ci/{req["after"]}'
+	file_name = f'/srv/ci/{req["after"]}'
 	with open(file_name, "a") as file:
 		res, output = run_build()
 		file.write(output)
@@ -56,7 +56,7 @@ def run_pipeline(req):
 
 # Run build script
 def run_build():
-	res = subprocess.run(["bash", "build.sh"])
+	res = subprocess.run(["bash", "build.sh"], stdout=subprocess.PIPE)
 	if res.returncode == 0:
 		return True, res.stdout
 	else:
