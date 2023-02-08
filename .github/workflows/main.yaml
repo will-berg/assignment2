@@ -11,12 +11,11 @@ jobs:
       - name: Build
         run:  |
               ./build.sh
-      - name: Activate
-        run:  |
-              . venv/bin/activate
       - name: Lint
         run:  |   
+              . venv/bin/activate
               ./lint.sh
       - name: Test
         run:  |
+              . venv/bin/activate
               ./test.sh
