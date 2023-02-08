@@ -89,9 +89,9 @@ def notify(req, status):
 			'X-GitHub-Api-Version': '2022-11-28',
 			'Content-Type': 'application/json',
 		}
-		data = {"state": status, "context": "ci_server"}
+		data = {"state": status, "context": "ci_server", "description": "This is a test description"}
 
-		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=data)
+		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=json.dumps(data))
 
 		response_json = response.json()
 		response.raise_for_status()
