@@ -13,8 +13,9 @@ def update():
 	if event is None:
 		return ({'message': 'The event type wasn\'t specified.'}, 400)
 
-	if event == 'push' and app.testing == False:
-		update_and_restart()
+	if event == 'push': 
+		if app.testing == False:
+			update_and_restart()
 		return ({'message': 'Update process started.'}, 200)
 	elif event == 'ping':
 		return ({}, 200)
