@@ -25,6 +25,7 @@ def update_and_restart():
 	pid = os.fork()
 
 	if pid == 0:
-		os.execl('./util/update_restart.sh')
+		os.execl('./util/update_restart.sh', './util/update_restart.sh')
 
 	return
+
