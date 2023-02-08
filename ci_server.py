@@ -87,7 +87,7 @@ def notify(req, status):
 			'Accept': 'application/vnd.github+json',
 			'Authorization': f'Bearer {github_token}',
 			'X-GitHub-Api-Version': '2022-11-28',
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'application/json',
 		}
 		data = '{"state":"' + status + '"}'
 
