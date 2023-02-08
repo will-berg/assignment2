@@ -78,21 +78,26 @@ def run_tests():
 
 
 # The CI server sets commit status
-def notify(req, status):
+# req: The input request (json)
+# name: The name of the check. For example, "code-coverage". (string)
+# conclusion: The final conclusion of the check. Can be one of: action_required, cancelled, failure, neutral, success, skipped, stale, timed_out. (string)
+# title: The title of the check run. (string)
+# summary: The summary of the check run. This parameter supports Markdown. Maximum length: 65535 characters. (string)
+# text: The details of the check run. This parameter supports Markdown. Maximum length: 65535 characters. (string)
+def notify(req, name, conclusion, title, summary, text):
 	try:
-		full_name = req["repository"]["full_name"]
-		SHA = req["after"]
-
 		headers = {
 			'Accept': 'application/vnd.github+json',
 			'Authorization': f'Bearer {github_token}',
 			'X-GitHub-Api-Version': '2022-11-28',
 			'Content-Type': 'application/json',
 		}
-		data = '{"state":"' + status + '"}'
+		output = {"title": title, "summary": summary, "text": text}
+		repo_full_name = req["repository"]["full_name"]
+		data = {"name": name, "head_sha": req["after"], "conclusion": conclusion, "output": output}
 
-		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=data)
-
+		response = requests.post(f'https://api.github.com/repos/{repo_full_name}/check-runs', headers=headers, data=data)
+		
 		response_json = response.json()
 		response.raise_for_status()
 
