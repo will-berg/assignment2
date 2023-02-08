@@ -34,7 +34,7 @@ def handle():
 
 def run_pipeline(req):
 	file_name = f'/srv/ci/{req["after"]}'
-	with open(file_name, "a") as file:
+	with open(file_name, "ab") as file:
 		res, output = run_build()
 		file.write(output)
 		if res == False:
