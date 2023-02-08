@@ -1,0 +1,18 @@
+You can find a diagram below that illustrates how the different services interact with each other.
+
+  ___              __________
+ |   |  webhook   |          |
+ |   | ---------> | updater  |
+ | G |   push |   |__________|
+ | i |        |    __________       ___________________
+ | t |        |   |    CI    |     |                   |
+ | H |        \-> |  server  | --> | build, lint, test |
+ | u |            |__________|     |___________________|
+ | b | Checks API                            |
+ |   | <-------------------------------------/
+ |___|
+
+
+When the updater receives a push event, it will fetch the latest on the main branch and build the project. It will then hot-reload both itself and the CI server. 
+
+Then the CI server receives a push event, it will build, lint and test the software and report back to GitHub using the Checks API.
