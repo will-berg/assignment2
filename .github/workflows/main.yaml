@@ -16,7 +16,7 @@ jobs:
               . venv/bin/activate
       - name: Lint
         run:  |   
-              lint.sh
+              ./lint.sh
       - name: Test
         run:  |
-              test.sh
+              ./test.sh
