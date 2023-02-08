@@ -108,7 +108,7 @@ def notify(req, conclusion, text, title, summary):
 		repo_full_name = req["repository"]["full_name"]
 		data = {"name": name, "head_sha": req["after"], "conclusion": conclusion, "output": output}
 
-		response = requests.post(f'https://api.github.com/repos/{repo_full_name}/check-runs', headers=headers, data=data)
+		response = requests.post(f'https://api.github.com/repos/{repo_full_name}/check-runs', headers=headers, data=json.dumps(data))
 
 		response_json = response.json()
 		response.raise_for_status()
