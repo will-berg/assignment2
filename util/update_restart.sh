@@ -5,6 +5,5 @@ cd $(dirname $0)
 
 cd ..
 ./build.sh
-. venv/bin/activate
+cd util
 ./reload.sh
-deactivate
