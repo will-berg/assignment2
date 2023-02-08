@@ -39,24 +39,24 @@ def handle():
 def run_pipeline(req):
 	notify(req, 'pending')
 	file_name = f'/srv/ci/{req["after"]}'
-	todays_date = str(date.today())
+	todays_date = bytes(date.today(), 'utf-8')
 	with open(file_name, "ab") as file:
-		file.write("Commit id: " + req["after"] + " Build date: " + todays_date + "\n")
+		file.write(bytes("Commit id: " + req["after"] + " Build date: " + todays_date + "\n", 'utf-8'))
 		res, output = run_build()
 		file.write(output)
-		file.write("\n")
+		file.write(bytes("\n",'utf-8'))
 		if res == False:
 			notify(req, 'error')
 			return
 		res, output = static_analysis()
 		file.write(output)
-		file.write("\n")
+		file.write(bytes("\n",'utf-8'))
 		if res == False:
 			notify(req, 'error')
 			return
 		res, output = run_tests()
 		file.write(output)
-		file.write("\n")
+		file.write(bytes("\n",'utf-8'))
 		if res == False:
 			notify(req, 'error')
 			return
