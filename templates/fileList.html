@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>Builds List</title>
+</head>
+<body>
+  <h1>Builds List</h1>
+  <ul>
+    {% for file in files %}
+      <li>    
+        <a href="http://molly.aronbergman.se/{{ file }}">
+        {{ file }}    
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
