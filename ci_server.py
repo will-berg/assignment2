@@ -5,6 +5,7 @@ import sys
 import subprocess
 import requests
 from github_token import github_token
+from datetime import date
 
 app = Flask(__name__)
 
@@ -37,19 +38,24 @@ def handle():
 
 def run_pipeline(req):
 	file_name = f'/srv/ci/{req["after"]}'
+	todays_date = date.today()
 	with open(file_name, "ab") as file:
+		file.write("Commit id: " + req["after"] + " Build date: " + todays_date + "\n")
 		res, output = run_build()
 		file.write(output)
+		file.write("\n")
 		if res == False:
 			notify(req, 'error')
 			return
 		res, output = static_analysis()
 		file.write(output)
+		file.write("\n")
 		if res == False:
 			notify(req, 'error')
 			return
 		res, output = run_tests()
 		file.write(output)
+		file.write("\n")
 		if res == False:
 			notify(req, 'error')
 			return
