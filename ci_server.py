@@ -55,7 +55,7 @@ def run_pipeline(req):
 
 # Run build script
 def run_build():
-	res = subprocess.run(["bash", "build.sh"], stdout=subprocess.PIPE)
+	res = subprocess.run(["bash", "build.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
 		return True, res.stdout
 	else:
@@ -64,7 +64,7 @@ def run_build():
 
 # The CI server performs static analysis on the updated branch
 def static_analysis():
-	res = subprocess.run(["bash", "lint.sh"], stdout=subprocess.PIPE)
+	res = subprocess.run(["bash", "lint.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
 		return True, res.stdout
 	else:
@@ -73,7 +73,7 @@ def static_analysis():
 
 # The CI server executes the test suite on the branch that was changed
 def run_tests():
-	res = subprocess.run(["bash", "test.sh"], stdout=subprocess.PIPE)
+	res = subprocess.run(["bash", "test.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
 		return True, res.stdout
 	else:
