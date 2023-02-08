@@ -83,8 +83,6 @@ def run_tests():
 # The CI server sets commit status
 def notify(req, status):
 	try:
-		full_name = req["repository"]["full_name"]
-		SHA = req["after"]
 
 		headers = {
 			'Accept': 'application/vnd.github+json',
@@ -92,9 +90,9 @@ def notify(req, status):
 			'X-GitHub-Api-Version': '2022-11-28',
 			'Content-Type': 'application/json',
 		}
-		data = {"state": status, "context": "ci_server", "description": "This is a test description"}
+		data = {"state": status, "context": "ci_server", "description": "This is a test description", "target_url": f'http://molly.aronbergman.se/{req["after"]}'}
 
-		response = requests.post(f'https://api.github.com/repos/{full_name}/statuses/{SHA}', headers=headers, data=json.dumps(data))
+		response = requests.post(f'https://api.github.com/repos/{req["repository"]["full_name"]}/statuses/{req["after"]}', headers=headers, data=json.dumps(data))
 
 		response_json = response.json()
 		response.raise_for_status()
