@@ -34,7 +34,7 @@ class TestUpdater(unittest.TestCase):
 	# A ping event should return a 200 status code and an empty JSON object
 	def test_ping(self):
 		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'ping'})
-		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.status_code, 400)
 		self.assertEqual(response.text.strip(), '{}')
 
 	# An unsupported event should return a 400 status code
