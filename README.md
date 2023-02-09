@@ -13,3 +13,5 @@ To test the program, execute `./test.sh`
 
 ## RUN
 To run the program, execute `./run.sh`
+
+assessment
