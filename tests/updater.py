@@ -63,7 +63,7 @@ class TestUpdater(unittest.TestCase):
 		# it just won't be acted upon.
 		self.assertEqual(response.status_code, 200)
 		data = json.loads(response.data)
-		self.assertTrue(data["message"].lowercase().find('skip') != -1)
+		self.assertTrue(data["message"].lower().find('skip') != -1)
 
 if __name__ == '__main__':
 	unittest.main()
