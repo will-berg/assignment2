@@ -38,7 +38,8 @@ def handle():
 
 def run_pipeline(req):
 	notify(req, 'pending')
-	file_name = f'/srv/ci/{req["after"]}'
+	output_dir = os.environ['BUILD_OUTPUT']
+	file_name = f'{output_dir}/{req["after"]}'
 	todays_date = str(date.today())
 	with open(file_name, "ab") as file:
 		file.write(bytes("Commit id: " + req["after"] + " Build date: " + todays_date + "\n", 'utf-8'))
