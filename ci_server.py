@@ -51,12 +51,10 @@ def run_pipeline(req):
 
 		if res == False:
 			notify(req, 'error')
-			file.write(bytes("Build failed."))
-			file.write(bytes("\n",'utf-8'))
+			file.write(bytes("Build failed.\n", 'utf-8'))
 			return
 		
-		file.write(bytes("Build finished successfully."))
-		file.write(bytes("\n",'utf-8'))
+		file.write(bytes("Build finished successfully.\n", 'utf-8'))
 
 		# Static analysis
 		res, output = static_analysis()
@@ -65,11 +63,10 @@ def run_pipeline(req):
 
 		if res == False:
 			notify(req, 'error')
-			file.write(bytes("Static analysis failed."))
+			file.write(bytes("Static analysis failed.\n", 'utf-8'))
 			return
 		
-		file.write(bytes("Static analysis finished successfully."))
-		file.write(bytes("\n",'utf-8'))
+		file.write(bytes("Static analysis finished successfully.\n", 'utf-8'))
 
 		# Tests
 		res, output = run_tests()
@@ -78,11 +75,10 @@ def run_pipeline(req):
 
 		if res == False:
 			notify(req, 'error')
-			file.write(bytes("Tests failed."))
+			file.write(bytes("Tests failed.\n", 'utf-8'))
 			return
 
-		file.write(bytes("Tests finished successfully."))
-		file.write(bytes("\n",'utf-8'))
+		file.write(bytes("Tests finished successfully.\n", 'utf-8'))
 
 		notify(req, 'success')
 
