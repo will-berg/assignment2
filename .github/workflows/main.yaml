@@ -10,10 +10,10 @@ jobs:
           python-version: "3.10"
       - name: Build
         run:  |
-              ./build.sh
+              ./scripts/build.sh
       - name: Lint
         run:  |
-              ./lint.sh
+              ./scripts/lint.sh
       - name: Test
         run:  |
-              ./test.sh
+              ./scripts/test.sh

@@ -1,4 +1,6 @@
 #/bin/bash
+cd $(dirname $0)
+cd ..
 export BUILD_OUTPUT=$1
 [ ! -d $BUILD_OUTPUT ] && mkdir $BUILD_OUTPUT
 gunicorn -b 0.0.0.0:8001 --daemon --pid /tmp/pid_ci --access-logfile /var/log/ci_access --error-logfile /var/log/ci_error 'ci_server:app'
