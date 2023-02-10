@@ -9,7 +9,8 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>updater</strong></big></big></font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aron/Documents/assignment2/updater.py">/home/aron/Documents/assignment2/updater.py</a></font></td></tr></table>
-    <p></p>
+    <p><tt>The&nbsp;auto&nbsp;updater&nbsp;service&nbsp;that&nbsp;makes&nbsp;sure&nbsp;the&nbsp;running&nbsp;instance&nbsp;use&nbsp;the&nbsp;current&nbsp;version&nbsp;available&nbsp;on&nbsp;the&nbsp;main&nbsp;branch.<br>
+Whenever&nbsp;it&nbsp;receives&nbsp;a&nbsp;push&nbsp;event&nbsp;from&nbsp;the&nbsp;webhook,&nbsp;it&nbsp;will&nbsp;fetch&nbsp;the&nbsp;latests&nbsp;code,&nbsp;built&nbsp;it&nbsp;and&nbsp;then&nbsp;hot&nbsp;reload&nbsp;the&nbsp;services&nbsp;without&nbsp;downtime.</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -25,8 +26,11 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-update"><strong>update</strong></a>()</dt></dl>
- <dl><dt><a name="-update_and_restart"><strong>update_and_restart</strong></a>()</dt></dl>
+<td width="100%"><dl><dt><a name="-update"><strong>update</strong></a>()</dt><dd><tt>#&nbsp;Handles&nbsp;the&nbsp;webhook&nbsp;requests&nbsp;from&nbsp;GitHub.<br>
+#&nbsp;When&nbsp;it&nbsp;receives&nbsp;a&nbsp;push&nbsp;event,&nbsp;it&nbsp;will&nbsp;update&nbsp;and&nbsp;restart&nbsp;the&nbsp;services.</tt></dd></dl>
+ <dl><dt><a name="-update_and_restart"><strong>update_and_restart</strong></a>()</dt><dd><tt>#&nbsp;Invokes&nbsp;a&nbsp;utility&nbsp;script&nbsp;that&nbsp;will&nbsp;fetch&nbsp;the&nbsp;latest&nbsp;code&nbsp;from&nbsp;main&nbsp;and<br>
+#&nbsp;hot&nbsp;reload&nbsp;the&nbsp;services.<br>
+#&nbsp;The&nbsp;script&nbsp;runs&nbsp;in&nbsp;a&nbsp;separate&nbsp;process&nbsp;to&nbsp;ensure&nbsp;it&nbsp;will&nbsp;not&nbsp;reload&nbsp;itself.</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">

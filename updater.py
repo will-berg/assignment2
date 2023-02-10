@@ -1,8 +1,14 @@
+"""
+The auto updater service that makes sure the running instance use the current version available on the main branch.
+Whenever it receives a push event from the webhook, it will fetch the latests code, built it and then hot reload the services without downtime.
+"""
 from flask import Flask, request
 import os
 
 app = Flask(__name__)
 
+# Handles the webhook requests from GitHub.
+# When it receives a push event, it will update and restart the services.
 @app.route("/", methods=["POST"])
 def update():
 	if not request.headers.get('User-Agent').startswith('GitHub-Hookshot'):
@@ -22,6 +28,9 @@ def update():
 	else:
 		return ({'message': f'Event {event} is not supported.'}, 400)
 
+# Invokes a utility script that will fetch the latest code from main and
+# hot reload the services.
+# The script runs in a separate process to ensure it will not reload itself.
 def update_and_restart():
 	pid = os.fork()
 
