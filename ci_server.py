@@ -20,20 +20,21 @@ def handle():
 	if event == 'ping':
 		return ({'message': 'We are here \o/'}, 200)
 	elif event == 'push':
-		pid = os.fork()
-		if pid == 0:
-			req = json.loads(request.data)
+		if app.testing == False:
+			pid = os.fork()
+			if pid == 0:
+				req = json.loads(request.data)
 
-			old = os.getcwd()
-			dir_name = f"/tmp/{req['after']}"
-			if not os.path.exists(dir_name):
-				os.mkdir(dir_name)
-			subprocess.call(["bash", "util/git_setup.sh", f"{req['repository']['clone_url']}", f"{req['after']}"])
-			os.chdir(dir_name)
-			run_pipeline(req)
+				old = os.getcwd()
+				dir_name = f"/tmp/{req['after']}"
+				if not os.path.exists(dir_name):
+					os.mkdir(dir_name)
+				subprocess.call(["bash", "util/git_setup.sh", f"{req['repository']['clone_url']}", f"{req['after']}"])
+				os.chdir(dir_name)
+				run_pipeline(req)
 
-			os.chdir(old)
-			os._exit(0)
+				os.chdir(old)
+				os._exit(0)
 		return {'message': 'webhook done'}
 
 def run_pipeline(req):
