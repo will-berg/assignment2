@@ -16,10 +16,13 @@ def update():
 
 	data = json.loads(request.data)
 
-	if event == 'push' and data['ref'] == 'refs/heads/main':
-		if app.testing == False:
-			update_and_restart()
-		return ({'message': 'Update process started.'}, 200)
+	if event == 'push':
+		if data['ref'] == 'refs/heads/main':
+			if app.testing == False:
+				update_and_restart()
+			return ({'message': 'Update process started.'}, 200)
+		else:
+			return ({'message': 'Push not on main, skipping update.'}, 200)
 	elif event == 'ping':
 		return ({}, 200)
 	else:
