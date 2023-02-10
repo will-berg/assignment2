@@ -1,5 +1,6 @@
 import unittest
 import requests
+import json
 
 from updater import app
 
@@ -33,18 +34,21 @@ class TestUpdater(unittest.TestCase):
 
 	# A ping event should return a 200 status code and an empty JSON object
 	def test_ping(self):
-		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'ping'})
+		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'ping'}, data="{}")
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.text.strip(), '{}')
 
 	# An unsupported event should return a 400 status code
 	def test_unsupported_event(self):
-		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'deadbeef'})
+		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'deadbeef'}, data="{}")
 		self.assertEqual(response.status_code, 400)
 
 	# A push event should return a 200 status code
 	def test_push(self):
-		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'push'})
+		data = {
+			"ref": "refs/heads/main"
+		}
+		response = self.app.post("/", headers={'User-Agent': 'GitHub-Hookshot', 'X-GitHub-Event': 'push'}, data=json.dumps(data))
 		self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
