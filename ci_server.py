@@ -43,24 +43,47 @@ def run_pipeline(req):
 	todays_date = str(date.today())
 	with open(file_name, "ab") as file:
 		file.write(bytes("Commit id: " + req["after"] + " Build date: " + todays_date + "\n", 'utf-8'))
+		
+		# Build
 		res, output = run_build()
 		file.write(output)
 		file.write(bytes("\n",'utf-8'))
+
 		if res == False:
 			notify(req, 'error')
+			file.write(bytes("Build failed."))
+			file.write(bytes("\n",'utf-8'))
 			return
+		
+		file.write(bytes("Build finished successfully."))
+		file.write(bytes("\n",'utf-8'))
+
+		# Static analysis
 		res, output = static_analysis()
 		file.write(output)
 		file.write(bytes("\n",'utf-8'))
+
 		if res == False:
 			notify(req, 'error')
+			file.write(bytes("Static analysis failed."))
 			return
+		
+		file.write(bytes("Static analysis finished successfully."))
+		file.write(bytes("\n",'utf-8'))
+
+		# Tests
 		res, output = run_tests()
 		file.write(output)
 		file.write(bytes("\n",'utf-8'))
+
 		if res == False:
 			notify(req, 'error')
+			file.write(bytes("Tests failed."))
 			return
+
+		file.write(bytes("Tests finished successfully."))
+		file.write(bytes("\n",'utf-8'))
+
 		notify(req, 'success')
 
 
