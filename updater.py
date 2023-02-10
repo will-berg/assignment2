@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import json
 
 app = Flask(__name__)
 
@@ -13,7 +14,9 @@ def update():
 	if event is None:
 		return ({'message': 'The event type wasn\'t specified.'}, 400)
 
-	if event == 'push' and request.data['ref'] == 'refs/heads/main':
+	data = json.loads(request.data)
+
+	if event == 'push' and data['ref'] == 'refs/heads/main':
 		if app.testing == False:
 			update_and_restart()
 		return ({'message': 'Update process started.'}, 200)
