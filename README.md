@@ -12,4 +12,4 @@ To lint the program, execute `./lint.sh`
 To test the program, execute `./test.sh`
 
 ## RUN
-To run the program, execute `./run.sh`
+To run the program, execute `./run.sh <output dir>`, where `<output dir>` is the directory where you want to store and serve the build output. `./run.sh` will start the CI server, the auto updater and the web server.
