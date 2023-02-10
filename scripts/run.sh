@@ -1,4 +1,5 @@
 #/bin/bash
+cd $(dirname $0)
 cd ..
 export BUILD_OUTPUT=$1
 [ ! -d $BUILD_OUTPUT ] && mkdir $BUILD_OUTPUT
