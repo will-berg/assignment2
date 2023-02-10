@@ -16,3 +16,6 @@ To run the program, execute `./scripts/run.sh <output dir>`, where `<output dir>
 
 ## BUILD LIST
 A list of all builds can be found at `http://molly.aronbergman.se`
+
+## WAY OF WORKING/ESSENCE
+The reflection of our way of working according to Essence is available in the `docs` folder.
