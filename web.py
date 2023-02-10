@@ -1,9 +1,14 @@
+"""
+Displays build information on web pages. Each build is given a unique URL using its
+commit identifier. At the root of the web page, all builds are listed as links to
+their respective CI output web pages.
+"""
 from flask import Flask, render_template
 import os
 
 app = Flask(__name__, template_folder='templates')
 
-# create anoter route for displaying files
+# Lists all builds as URLs to their CI output web pages, viewable at URL http://molly.aronbergman.se/
 @app.route('/')
 def listBuilds():
 	directory = os.environ['BUILD_OUTPUT']
@@ -11,6 +16,7 @@ def listBuilds():
 	return render_template('fileList.html', files=files)
 
 
+# Displays the CI outputs of a build at the URL http://molly.aronbergman.se/id, where id is the commit id
 @app.route("/<id>")
 def show_build(id):
 	directory = os.environ['BUILD_OUTPUT']

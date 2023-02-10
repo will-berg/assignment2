@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module ci_server</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>ci_server</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aron/Documents/assignment2/ci_server.py">/home/aron/Documents/assignment2/ci_server.py</a></font></td></tr></table>
+    <p><tt>The&nbsp;CI&nbsp;server&nbsp;runs&nbsp;the&nbsp;CI&nbsp;pipeline&nbsp;when&nbsp;a&nbsp;subscribed&nbsp;event&nbsp;occurs&nbsp;at&nbsp;the&nbsp;GitHub&nbsp;repository.<br>
+This&nbsp;includes&nbsp;running&nbsp;the&nbsp;build,&nbsp;performing&nbsp;static&nbsp;analysis,&nbsp;testing&nbsp;the&nbsp;code,&nbsp;and&nbsp;then<br>
+notifying&nbsp;GitHub&nbsp;of&nbsp;the&nbsp;results.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="requests.html">requests</a><br>
+</td><td width="25%" valign=top><a href="subprocess.html">subprocess</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-handle"><strong>handle</strong></a>()</dt><dd><tt>#&nbsp;Handles&nbsp;POST&nbsp;requests&nbsp;to&nbsp;the&nbsp;root&nbsp;endpoint.&nbsp;On&nbsp;push&nbsp;events,&nbsp;the&nbsp;repo&nbsp;is&nbsp;cloned&nbsp;and<br>
+#&nbsp;entered&nbsp;and&nbsp;the&nbsp;pipeline&nbsp;is&nbsp;executed.</tt></dd></dl>
+ <dl><dt><a name="-notify"><strong>notify</strong></a>(req, status)</dt><dd><tt>#&nbsp;Notifies&nbsp;github&nbsp;with&nbsp;POST&nbsp;request&nbsp;that&nbsp;sets&nbsp;commit&nbsp;status.&nbsp;Also&nbsp;includes&nbsp;a&nbsp;target&nbsp;URL<br>
+#&nbsp;that&nbsp;contains&nbsp;the&nbsp;relevant&nbsp;outputs&nbsp;generated&nbsp;during&nbsp;the&nbsp;pipeline&nbsp;process.</tt></dd></dl>
+ <dl><dt><a name="-run_build"><strong>run_build</strong></a>()</dt><dd><tt>#&nbsp;Runs&nbsp;the&nbsp;build&nbsp;script&nbsp;(activates&nbsp;virtual&nbsp;environment,&nbsp;installs&nbsp;dependencies).<br>
+#&nbsp;Returns&nbsp;boolean&nbsp;indicating&nbsp;a&nbsp;pass&nbsp;or&nbsp;fail&nbsp;along&nbsp;with&nbsp;the&nbsp;build&nbsp;output.</tt></dd></dl>
+ <dl><dt><a name="-run_pipeline"><strong>run_pipeline</strong></a>(req)</dt><dd><tt>#&nbsp;Runs&nbsp;the&nbsp;build,&nbsp;performs&nbsp;linting&nbsp;on&nbsp;the&nbsp;code,&nbsp;and&nbsp;runs&nbsp;the&nbsp;relevant&nbsp;tests.<br>
+#&nbsp;Notifies&nbsp;GitHub&nbsp;along&nbsp;every&nbsp;step&nbsp;of&nbsp;the&nbsp;way&nbsp;and&nbsp;stores&nbsp;outputs&nbsp;in&nbsp;a&nbsp;file.</tt></dd></dl>
+ <dl><dt><a name="-run_tests"><strong>run_tests</strong></a>()</dt><dd><tt>#&nbsp;Runs&nbsp;the&nbsp;test&nbsp;script&nbsp;(unit&nbsp;testing&nbsp;ci_server.py&nbsp;and&nbsp;updater.py).<br>
+#&nbsp;Returns&nbsp;boolean&nbsp;indicating&nbsp;a&nbsp;pass&nbsp;or&nbsp;fail&nbsp;along&nbsp;with&nbsp;the&nbsp;testing&nbsp;output.</tt></dd></dl>
+ <dl><dt><a name="-static_analysis"><strong>static_analysis</strong></a>()</dt><dd><tt>#&nbsp;Runs&nbsp;the&nbsp;lint&nbsp;script&nbsp;(static&nbsp;analysis&nbsp;on&nbsp;ci_server.py,&nbsp;web.py,&nbsp;and&nbsp;updater.py).<br>
+#&nbsp;Returns&nbsp;boolean&nbsp;indicating&nbsp;a&nbsp;pass&nbsp;or&nbsp;fail&nbsp;along&nbsp;with&nbsp;the&nbsp;pylint&nbsp;output.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>app</strong> = &lt;Flask 'ci_server'&gt;<br>
+<strong>github_token</strong> = 'your_token_here'<br>
+<strong>request</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
+</body></html>

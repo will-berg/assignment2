@@ -1,7 +1,11 @@
+"""
+The CI server runs the CI pipeline when a subscribed event occurs at the GitHub repository.
+This includes running the build, performing static analysis, testing the code, and then
+notifying GitHub of the results.
+"""
 from flask import Flask, request
 import os
 import json
-import sys
 import subprocess
 import requests
 from github_token import github_token
@@ -9,7 +13,8 @@ from datetime import date
 
 app = Flask(__name__)
 
-# Runs on every subscribed event
+# Handles POST requests to the root endpoint. On push events, the repo is cloned and
+# entered and the pipeline is executed.
 @app.route("/", methods=["POST"])
 def handle():
 	if not request.headers.get('User-Agent').startswith('GitHub-Hookshot'):
@@ -37,6 +42,8 @@ def handle():
 				os._exit(0)
 		return {'message': 'webhook done'}
 
+# Runs the build, performs linting on the code, and runs the relevant tests.
+# Notifies GitHub along every step of the way and stores outputs in a file.
 def run_pipeline(req):
 	notify(req, 'pending')
 	output_dir = os.environ['BUILD_OUTPUT']
@@ -84,7 +91,8 @@ def run_pipeline(req):
 		notify(req, 'success')
 
 
-# Run build script
+# Runs the build script (activates virtual environment, installs dependencies).
+# Returns boolean indicating a pass or fail along with the build output.
 def run_build():
 	res = subprocess.run(["bash", "scripts/build.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
@@ -93,7 +101,8 @@ def run_build():
 		return False, res.stdout
 
 
-# The CI server performs static analysis on the updated branch
+# Runs the lint script (static analysis on ci_server.py, web.py, and updater.py).
+# Returns boolean indicating a pass or fail along with the pylint output.
 def static_analysis():
 	res = subprocess.run(["bash", "scripts/lint.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
@@ -102,7 +111,8 @@ def static_analysis():
 		return False, res.stdout
 
 
-# The CI server executes the test suite on the branch that was changed
+# Runs the test script (unit testing ci_server.py and updater.py).
+# Returns boolean indicating a pass or fail along with the testing output.
 def run_tests():
 	res = subprocess.run(["bash", "scripts/test.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	if res.returncode == 0:
@@ -111,7 +121,8 @@ def run_tests():
 		return False, res.stdout
 
 
-# The CI server sets commit status
+# Notifies github with POST request that sets commit status. Also includes a target URL
+# that contains the relevant outputs generated during the pipeline process.
 def notify(req, status):
 	try:
 
